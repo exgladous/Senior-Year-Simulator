@@ -11,6 +11,8 @@ function nextday() {
     if (day == 0) {
         generateclasses()
         showschedule();
+        document.getElementById("main").hidden = false
+        endturn.textContent = "Next Turn"
     }
 
     day++;
@@ -66,7 +68,7 @@ var header = document.getElementById("header");
 
 function updateheader() {
     if (day != 0 && day % 5 == 0) {
-        header.textContent = "Today is day " + day + ", it's also a Friday, you'll have more time for activities over the weekend."
+        header.textContent = "Today is day " + day + ", it's also a Friday, you'll be less sleepy if you overstudy."
     } else {
         header.textContent = "Today is day " + day;
     }
