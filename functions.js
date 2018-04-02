@@ -18,6 +18,7 @@ function nextday() {
     }
 
     day++;
+    events.textContent = ""
     classevents();
     evalulatestatus();
     updatestats();
@@ -57,6 +58,9 @@ function generateclasses() {
     player.preparedthree = 1;
     player.preparedfour = 1;
     player.preparedfive = 1;
+
+    classesA = [player.periodfour, player.periodfive],
+        classesB = [player.periodone, player.periodtwo, player.periodthree];
 }
 
 /////////// daily functions //////////
@@ -68,11 +72,10 @@ function updateheader() {
         header.textContent = "Today is day " + day + ", it's also a Friday, you'll be less sleepy if you overstudy."
     } else if (day % 2 == 0) {
         header.textContent = "Today is day " + day + ", a B day. You have " + player.periodone + ", " + player.periodtwo + ", and " + player.periodthree + ".";
-        var daytype = "B";
+        daytype = "B";
     } else {
         header.textContent = "Today is day " + day + ", an A day. You have " + player.periodfour + " and " + player.periodfive + "."
-        var daytype = "A";
-
+        daytype = "A";
     }
 }
 ////// status update /////
@@ -106,8 +109,28 @@ function evalulatestatus() {
 }
 
 var events = document.getElementById("events");
+
 function classevents() {
+
+    var sleepcheck = Math.abs(player.slp) * Math.random();
     if (day == 1) {
-        events.textContent = "Today is the first day, you have no homework, but you are unsettled by the beginning of the end."
+        events.textContent = "Today is the first day. You are unsettled by the beginning of the end."
+    }
+
+    if (sleepcheck > 2) {
+        if (daytype == "A") {
+            var selection = Math.floor(Math.random() * 2),
+                targetclass = classesA[selection];
+            events.textContent = "You fell asleep during " + targetclass + "."
+            player.preparedfour = player.preparedfour - .1
+            player.preparedfive = player.preparedfive - .1
+        } else if (daytype == "B") {
+            var selection = Math.floor(Math.random() * 3),
+                targetclass = classesB[selection];
+            player.preparedone = player.preparedone - .1
+            player.preparedtwo = player.preparedtwo - .1
+            player.preparedthree = player.preparedthree - .1
+            events.textContent = "You fell asleep during " + targetclass + "."
+        }
     }
 }
