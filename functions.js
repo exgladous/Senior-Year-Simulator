@@ -19,7 +19,10 @@ function nextday() {
 
     day++;
     events.textContent = ""
+    testui.hidden = true;
+    testbox.hidden = true;
     classevents();
+    testday();
     evalulatestatus();
     updatestats();
     updateheader();
@@ -47,11 +50,11 @@ function generateclasses() {
     player.periodfour = player.classes[3];
     player.periodfive = player.classes[4];
 
-    player.gradeone = 0;
-    player.gradetwo = 0;
-    player.gradethree = 0;
-    player.gradefour = 0;
-    player.gradefive = 0;
+    player.gradeone = 100;
+    player.gradetwo = 100;
+    player.gradethree = 100;
+    player.gradefour = 100;
+    player.gradefive = 100;
 
     player.preparedone = 1;
     player.preparedtwo = 1;
@@ -59,8 +62,8 @@ function generateclasses() {
     player.preparedfour = 1;
     player.preparedfive = 1;
 
-    classesA = [player.periodfour, player.periodfive],
-        classesB = [player.periodone, player.periodtwo, player.periodthree];
+    classesA = [player.periodfour, player.periodfive];
+    classesB = [player.periodone, player.periodtwo, player.periodthree];
 }
 
 /////////// daily functions //////////
@@ -69,7 +72,13 @@ var header = document.getElementById("header");
 
 function updateheader() {
     if (day != 0 && day % 5 == 0) {
-        header.textContent = "Today is day " + day + ", it's also a Friday, you'll be less sleepy if you overstudy."
+        if (day % 2 == 0) {
+            header.textContent = "Today is day " + day + ", a B day. You have " + player.periodone + ", " + player.periodtwo + ", and " + player.periodthree + ". Its also a Friday, you'll be less sleepy if you overstudy.";
+            daytype = "B";
+        } else {
+            header.textContent = "Today is day " + day + ", an A day. You have " + player.periodfour + " and " + player.periodfive + ". Its also a Friday, you'll be less sleepy if you overstudy."
+            daytype = "A";
+        }
     } else if (day % 2 == 0) {
         header.textContent = "Today is day " + day + ", a B day. You have " + player.periodone + ", " + player.periodtwo + ", and " + player.periodthree + ".";
         daytype = "B";
@@ -121,7 +130,7 @@ function classevents() {
         if (daytype == "A") {
             var selection = Math.floor(Math.random() * 2),
                 targetclass = classesA[selection];
-            events.textContent = "You fell asleep during " + targetclass + "."
+            events.textContent = "You're very tired, you got less out of all your classes today."
             player.preparedfour = player.preparedfour - .1
             player.preparedfive = player.preparedfive - .1
         } else if (daytype == "B") {
@@ -130,7 +139,68 @@ function classevents() {
             player.preparedone = player.preparedone - .1
             player.preparedtwo = player.preparedtwo - .1
             player.preparedthree = player.preparedthree - .1
-            events.textContent = "You fell asleep during " + targetclass + "."
+            events.textContent = "You're very tired, you got less out of all your classes today."
+        }
+    }
+}
+
+var testui = document.getElementById("test"),
+    testbox = document.getElementById("testdecision"),
+    attemptbutton = document.getElementById("attempt"),
+    cheat = document.getElementById("cheat");
+
+function testday() {
+    if (day % 2 != 0 && day % 5 == 0 && day != 5) {
+        testui.hidden = false;
+        testbox.hidden = false;
+        var testclassnumber = Math.floor(Math.random() * 2),
+            testclass = classesA[Math.floor(Math.random() * 2)]
+        if (testclassnumber == 0) {
+            if (player.preparedone > .6) {
+                testui.textContent = "You have a test in" + testclass + ". You feel pretty prepared for it."
+            } else if (player.preparedone > .3) {
+                testui.textContent = "You have a test in" + testclass + ". You're unsure about this test."
+            } else {
+                testui.textContent = "You have a test in" + testclass + ". You feel bad about this test."
+            }
+        } else if (testclassnumber == 1) {
+            if (player.preparedtwo > .6) {
+                testui.textContent = "You have a test in" + testclass + ". You feel pretty prepared for it."
+            } else if (player.preparedtwo > .3) {
+                testui.textContent = "You have a test in" + testclass + ". You're unsure about this test."
+            } else {
+                testui.textContent = "You have a test in" + testclass + ". You feel bad about this test."
+            }
+        }
+    } else if (day % 2 == 0 && day % 5 == 0) {
+        testui.hidden = false;
+        testbox.hidden = false;
+        var testclassnumber = Math.floor(Math.random() * 3) + 2,
+            testclass = classesB[Math.floor(Math.random() * 3)];
+        if (testclassnumber == 2) {
+            if (player.preparedthree > .6) {
+                testui.textContent = "You have a test in " + testclass + ". You feel pretty prepared for it."
+            } else if (player.preparedthree > .3) {
+                testui.textContent = "You have a test in " + testclass + ". You're unsure about this test."
+            } else {
+                testui.textContent = "You have a test in " + testclass + ". You feel bad about this test."
+            }
+        } else if (testclassnumber == 3) {
+            if (player.preparedfour > .6) {
+                testui.textContent = "You have a test in " + testclass + ". You feel pretty prepared for it."
+            } else if (player.preparedfour > .3) {
+                testui.textContent = "You have a test in " + testclass + ". You're unsure about this test."
+            } else {
+                testui.textContent = "You have a test in " + testclass + ". You feel bad about this test."
+            }
+        } else if (testclassnumber == 4) {
+            if (player.preparedfive > .6) {
+                testui.textContent = "You have a test in " + testclass + ". You feel pretty prepared for it."
+            } else if (player.preparedfive > .3) {
+                testui.textContent = "You have a test in " + testclass + ". You're unsure about this test."
+            } else {
+                testui.textContent = "You have a test in " + testclass + ". You feel bad about this test."
+            }
         }
     }
 }
