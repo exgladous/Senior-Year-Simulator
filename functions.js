@@ -56,11 +56,11 @@ function generateclasses() {
     player.gradefour = 100;
     player.gradefive = 100;
 
-    player.preparedone = 1;
-    player.preparedtwo = 1;
-    player.preparedthree = 1;
-    player.preparedfour = 1;
-    player.preparedfive = 1;
+    player.preparedone = .8;
+    player.preparedtwo = .8;
+    player.preparedthree = .8;
+    player.preparedfour = .8;
+    player.preparedfive = .8;
 
     classesA = [player.periodfour, player.periodfive];
     classesB = [player.periodone, player.periodtwo, player.periodthree];
@@ -147,14 +147,15 @@ function classevents() {
 var testui = document.getElementById("test"),
     testbox = document.getElementById("testdecision"),
     attemptbutton = document.getElementById("attempt"),
-    cheat = document.getElementById("cheat");
+    cheat = document.getElementById("cheat"),
+    testhistory = document.getElementById("testhistory");
 
 function testday() {
     if (day % 2 != 0 && day % 5 == 0 && day != 5) {
         testui.hidden = false;
         testbox.hidden = false;
-        var testclassnumber = Math.floor(Math.random() * 2),
-            testclass = classesA[Math.floor(Math.random() * 2)]
+        testclassnumber = Math.floor(Math.random() * 2);
+        testclass = classesA[Math.floor(Math.random() * 2)]
         if (testclassnumber == 0) {
             if (player.preparedone > .6) {
                 testui.textContent = "You have a test in" + testclass + ". You feel pretty prepared for it."
@@ -175,8 +176,8 @@ function testday() {
     } else if (day % 2 == 0 && day % 5 == 0) {
         testui.hidden = false;
         testbox.hidden = false;
-        var testclassnumber = Math.floor(Math.random() * 3) + 2,
-            testclass = classesB[Math.floor(Math.random() * 3)];
+        testclassnumber = Math.floor(Math.random() * 3) + 2;
+        testclass = classesB[Math.floor(Math.random() * 3)];
         if (testclassnumber == 2) {
             if (player.preparedthree > .6) {
                 testui.textContent = "You have a test in " + testclass + ". You feel pretty prepared for it."
@@ -201,6 +202,35 @@ function testday() {
             } else {
                 testui.textContent = "You have a test in " + testclass + ". You feel bad about this test."
             }
+        }
+    }
+
+    if (cheat.checked == true) {
+        if (Math.random() > .5) {
+            alert("You lost! You were caught cheating, your academic career is over. Refresh to restart.")
+            endturn.hidden = "true"
+        }
+    } else if (attemptbutton.checked == true) {
+        if (testclassnumber == 0) {
+            testgrade = player.preparedone * 100 + Math.random() * 10;
+            player.gradeone = Math.floor((player.gradeone + testgrade) / 2);
+            testhistory.textContent = "Your score on your last test was " + testgrade + " in " + player.periodone + "."
+        } else if (testclassnumber == 1) {
+            testgrade = player.preparedtwo * 100 + Math.random() * 10;
+            player.gradetwo = Math.floor((player.gradetwo + testgrade) / 2);
+            testhistory.textContent = "Your score on your last test was " + testgrade + " in " + player.periodtwo + "."
+        } else if (testclassnumber == 2) {
+            testgrade = player.preparedthree * 100 + Math.random() * 10;
+            player.gradethree = Math.floor((player.gradethree + testgrade) / 2);
+            testhistory.textContent = "Your score on your last test was " + testgrade + " in " + player.periodthree + "."
+        } else if (testclassnumber == 3) {
+            testgrade = player.preparedfour * 100 + Math.random() * 10;
+            player.gradefour = Math.floor((player.gradefour + testgrade) / 2);
+            testhistory.textContent = "Your score on your last test was " + testgrade + " in " + player.periodfour + "."
+        } else if (testclassnumber == 4) {
+            testgrade = player.preparedfive * 100 + Math.random() * 10;
+            player.gradefive = Math.floor((player.gradefive + testgrade) / 2);
+            testhistory.textContent = "Your score on your last test was " + testgrade + " in " + player.periodfive + "."
         }
     }
 }
