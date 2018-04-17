@@ -46,6 +46,7 @@ function generateclasses() {
         player.classes[i] = player.classes[j];
         player.classes[j] = temp;
     }
+
     player.periodone = player.classes[0];
     player.periodtwo = player.classes[1];
     player.periodthree = player.classes[2];
@@ -58,11 +59,11 @@ function generateclasses() {
     player.gradefour = 100;
     player.gradefive = 100;
 
-    player.preparedone = .8;
-    player.preparedtwo = .8;
-    player.preparedthree = .8;
-    player.preparedfour = .8;
-    player.preparedfive = .8;
+    player.preparedone = .7;
+    player.preparedtwo = .7;
+    player.preparedthree = .7;
+    player.preparedfour = .7;
+    player.preparedfive = .7;
 
     classesA = [player.periodfour, player.periodfive];
     classesB = [player.periodone, player.periodtwo, player.periodthree];
@@ -148,16 +149,15 @@ function evalulatestatus() {
 var events = document.getElementById("events");
 
 function classevents() {
-
     if (day == 1) {
         events.textContent = "Today is the first day. You are unsettled by the beginning of the end."
     }
 
     if (player.slp > 3) {
         if (daytype == "A") {
-            events.textContent = "You're very tired, you got less out of all your classes today."
             player.preparedfour = player.preparedfour - .1
             player.preparedfive = player.preparedfive - .1
+            events.textContent = "You're very tired, you got less out of all your classes today."
         } else if (daytype == "B") {
             player.preparedone = player.preparedone - .1
             player.preparedtwo = player.preparedtwo - .1
@@ -178,7 +178,6 @@ function rolltest() {
         testui.hidden = false;
         testbox.hidden = false;
         testclassnumber = Math.floor(Math.random() * 2);
-        console.log(testclassnumber + "" + daytype)
         testclass = classesA[testclassnumber];
         if (testclassnumber == 0) {
             if (player.preparedone > .6) {
@@ -202,9 +201,7 @@ function rolltest() {
         testbox.hidden = false;
         testclassnumber = Math.floor(Math.random() * 3);
         testclass = classesB[(testclassnumber)];
-        testclassnumber = testclassnumber + 2;
-        console.log(testclassnumber + "" + daytype)
-        if (testclassnumber == 2) {
+        if (testclassnumber == 0) {
             if (player.preparedthree > .6) {
                 testui.textContent = "You have a test in " + testclass + ". You feel pretty prepared for it."
             } else if (player.preparedthree > .3) {
@@ -212,7 +209,7 @@ function rolltest() {
             } else {
                 testui.textContent = "You have a test in " + testclass + ". You feel bad about this test."
             }
-        } else if (testclassnumber == 3) {
+        } else if (testclassnumber == 1) {
             if (player.preparedfour > .6) {
                 testui.textContent = "You have a test in " + testclass + ". You feel pretty prepared for it."
             } else if (player.preparedfour > .3) {
@@ -220,7 +217,7 @@ function rolltest() {
             } else {
                 testui.textContent = "You have a test in " + testclass + ". You feel bad about this test."
             }
-        } else if (testclassnumber == 4) {
+        } else if (testclassnumber == 2) {
             if (player.preparedfive > .6) {
                 testui.textContent = "You have a test in " + testclass + ". You feel pretty prepared for it."
             } else if (player.preparedfive > .3) {
@@ -230,56 +227,52 @@ function rolltest() {
             }
         }
     }
-    evaluatetest();
-}
 
-function evaluatetest() {
-    console.log(testclassnumber + "" + daytype)
     if (cheat.checked == true) {
         if (Math.random() > .5) {
             alert("You lost! You were caught cheating, ending your academic career. Refresh to restart.")
             endturn.hidden = "true"
         } else {
-            if (testclassnumber == 0) {
+            if (testclassnumber == 0 && daytype == "A") {
                 testgrade = Math.random() * 100
                 player.gradeone = Math.floor((player.gradeone + testgrade) / 2)
                 testhistory.textContent = "Your score on your last test was " + Math.floor(testgrade) + " in " + player.periodone + "."
-            } else if (testclassnumber == 1) {
+            } else if (testclassnumber == 1 && daytype == "A") {
                 testgrade = Math.random() * 100
                 player.gradetwo = Math.floor((player.gradetwo + testgrade) / 2)
                 testhistory.textContent = "Your score on your last test was " + Math.floor(testgrade) + " in " + player.periodtwo + "."
-            } else if (testclassnumber == 2) {
+            } else if (testclassnumber == 2 && daytype == "A") {
                 testgrade = Math.random() * 100
                 player.gradethree = Math.floor((player.gradethree + testgrade) / 2)
                 testhistory.textContent = "Your score on your last test was " + Math.floor(testgrade) + " in " + player.periodthree + "."
-            } else if (testclassnumber == 3) {
+            } else if (testclassnumber == 0 && daytype == "B") {
                 testgrade = Math.random() * 100
                 player.gradefour = Math.floor((player.gradefour + testgrade) / 2)
                 testhistory.textContent = "Your score on your last test was " + Math.floor(testgrade) + " in " + player.periodfour + "."
-            } else if (testclassnumber == 4) {
+            } else if (testclassnumber == 1 && daytype == "B") {
                 testgrade = Math.random() * 100
                 player.gradefive = Math.floor((player.gradefive + testgrade) / 2)
                 testhistory.textContent = "Your score on your last test was " + Math.floor(testgrade) + " in " + player.periodfive + "."
             }
         }
     } else if (attemptbutton.checked == true) {
-        if (testclassnumber == 0) {
+        if (testclassnumber == 0 && daytype == "A") {
             testgrade = player.preparedone * 100 + Math.random() * 10;
             player.gradeone = Math.floor((player.gradeone + testgrade) / 2);
             testhistory.textContent = "Your score on your last test was " + Math.floor(testgrade) + " in " + player.periodone + "."
-        } else if (testclassnumber == 1) {
+        } else if (testclassnumber == 1 && daytype == "A") {
             testgrade = player.preparedtwo * 100 + Math.random() * 10;
             player.gradetwo = Math.floor((player.gradetwo + testgrade) / 2);
             testhistory.textContent = "Your score on your last test was " + Math.floor(testgrade) + " in " + player.periodtwo + "."
-        } else if (testclassnumber == 2) {
+        } else if (testclassnumber == 2 && daytype == "A") {
             testgrade = player.preparedthree * 100 + Math.random() * 10;
             player.gradethree = Math.floor((player.gradethree + testgrade) / 2);
             testhistory.textContent = "Your score on your last test was " + Math.floor(testgrade) + " in " + player.periodthree + "."
-        } else if (testclassnumber == 3) {
+        } else if (testclassnumber == 0 && daytype == "B") {
             testgrade = player.preparedfour * 100 + Math.random() * 10;
             player.gradefour = Math.floor((player.gradefour + testgrade) / 2);
             testhistory.textContent = "Your score on your last test was " + Math.floor(testgrade) + " in " + player.periodfour + "."
-        } else if (testclassnumber == 4) {
+        } else if (testclassnumber == 1 && daytype == "B") {
             testgrade = player.preparedfive * 100 + Math.random() * 10;
             player.gradefive = Math.floor((player.gradefive + testgrade) / 2);
             testhistory.textContent = "Your score on your last test was " + Math.floor(testgrade) + " in " + player.periodfive + "."
@@ -354,20 +347,30 @@ function generatehomework() {
 }
 
 function evaluatehomework(caller, assignedday) {
-    if (caller == "one" && player.gradeone < 90) {
-        player.gradeone = player.gradeone + (5 / (day - assignedday + 1))
+    if (caller == "one") {
+        if (player.gradeone < 90) {
+            player.gradeone = Math.floor(player.gradeone + (5 / (day - assignedday + 1)))
+        }
         player.slp = player.slp + 1
-    } else if (caller == "two" && player.gradetwo < 90) {
-        player.gradetwo = player.gradetwo + (5 / (day - assignedday + 1))
+    } else if (caller == "two") {
+        if (player.gradetwo < 90) {
+            player.gradetwo = Math.floor(player.gradetwo + (5 / (day - assignedday + 1)))
+        }
         player.slp = player.slp + 1
-    } else if (caller == "three" && player.gradethree < 90) {
-        player.gradethree = player.gradethree + (5 / (day - assignedday + 1))
+    } else if (caller == "three") {
+        if (player.gradethree < 90) {
+            player.gradethree = Math.floor(player.gradethree + (5 / (day - assignedday + 1)))
+        }
         player.slp = player.slp + 1
-    } else if (caller == "four" && player.gradefour < 90) {
-        player.gradefour = player.gradefour + (5 / (day - assignedday + 1))
+    } else if (caller == "four") {
+        if (player.gradefour < 90) {
+            player.gradefour = Math.floor(player.gradefour + (5 / (day - assignedday + 1)))
+        }
         player.slp = player.slp + 1
-    } else if (caller == "five" && player.gradefive < 90) {
-        player.gradefive = player.gradefive + (5 / (day - assignedday + 1))
+    } else if (caller == "five") {
+        if (player.gradefive < 90) {
+            player.gradefive = Math.floor(player.gradefive + (5 / (day - assignedday + 1)))
+        }
         player.slp = player.slp + 1
     }
 }
