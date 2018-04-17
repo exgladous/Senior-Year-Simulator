@@ -4,7 +4,7 @@ var player = {
     },
     day = 0,
     daytype = "",
-    lastday = 180;
+    lastday = 30;
 
 var endturn = document.getElementById("endturn");
 endturn.addEventListener("click", nextday);
@@ -16,19 +16,33 @@ function nextday() {
         document.getElementById("main").hidden = false
         document.getElementById("intro").hidden = true
         endturn.textContent = "Next Day"
+        day++;
+        evalulatestatus();
+        updatestats();
+        updateheader();
+    } else if (day == lastday) {
+        if (player.gradeone > 69 && player.gradetwo > 69 && player.gradethree > 69 && player.gradefour > 69 && player.gradefive > 69) {
+            alert("You won! You passed all of your classes and received your diploma. Your future is looking bright.")
+            endturn.hidden = true
+        } else {
+            alert("You failed one or more classes with below a C. You look towards taking remedial classes during your summer.")
+            endturn.hidden = true
+        }
+    } else if (day % 5 == 0 && day != 5 && attemptbutton.checked == false && cheat.checked == false) {
+        alert("You must attempt the test or attempt to cheat on the test.")
+    } else {
+        day++;
+        events.textContent = ""
+        testui.hidden = true;
+        testbox.hidden = true;
+        evalulatestatus();
+        updatestats();
+        updateheader();
+
+        classevents();
+        rolltest();
+        generatehomework();
     }
-    day++;
-    events.textContent = ""
-    testui.hidden = true;
-    testbox.hidden = true;
-    evalulatestatus();
-    updatestats();
-    updateheader();
-
-    classevents();
-    rolltest();
-    generatehomework();
-
 }
 
 var schedule = document.getElementById("schedule");
@@ -74,10 +88,10 @@ var header = document.getElementById("header");
 function updateheader() {
     if (day != 0 && day % 5 == 0) {
         if (day % 2 == 0) {
-            header.textContent = "Today is day " + day + ", a B day. You have " + player.periodone + ", " + player.periodtwo + ", and " + player.periodthree + ". Its also a Friday, you'll be less sleepy if you overstudy.";
+            header.textContent = "Today is day " + day + ", a B day. You have " + player.periodone + ", " + player.periodtwo + ", and " + player.periodthree + ". Its also a Friday, you have more time for activities.";
             daytype = "B";
         } else {
-            header.textContent = "Today is day " + day + ", an A day. You have " + player.periodfour + " and " + player.periodfive + ". Its also a Friday, you'll be less sleepy if you overstudy."
+            header.textContent = "Today is day " + day + ", an A day. You have " + player.periodfour + " and " + player.periodfive + ". Its also a Friday, you have more time for activities."
             daytype = "A";
         }
     } else if (day % 2 == 0) {
