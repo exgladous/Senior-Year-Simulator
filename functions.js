@@ -4,7 +4,6 @@ var player = {
     },
     day = 0,
     daytype = "",
-    testday = false,
     lastday = 180;
 
 var endturn = document.getElementById("endturn");
@@ -22,9 +21,9 @@ function nextday() {
     events.textContent = ""
     testui.hidden = true;
     testbox.hidden = true;
+    evalulatestatus();
     updatestats();
     updateheader();
-    evalulatestatus();
 
     classevents();
     rolltest();
@@ -35,15 +34,15 @@ function nextday() {
 var schedule = document.getElementById("schedule");
 
 function showschedule() {
-    schedule.textContent = "Your classes in order: " + player.periodone + ", " + player.periodtwo + ", " + player.periodthree + ", " + player.periodfour + ", " + player.periodfive;
+    schedule.textContent = "Your classes in order: " + player.periodfour + ", " + player.periodfive + ", " + player.periodone + ", " + player.periodtwo + ", " + player.periodthree;
 }
 
 function generateclasses() {
     player.classes = ["English", "Math", "Science", "History", "Elective"]
 
     for (i = player.classes.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = player.classes[i];
+        var j = Math.floor(Math.random() * (i + 1)),
+            temp = player.classes[i];
         player.classes[i] = player.classes[j];
         player.classes[j] = temp;
     }
@@ -59,11 +58,11 @@ function generateclasses() {
     player.gradefour = 100;
     player.gradefive = 100;
 
-    player.preparedone = .7;
-    player.preparedtwo = .7;
-    player.preparedthree = .7;
-    player.preparedfour = .7;
-    player.preparedfive = .7;
+    player.preparedone = .8;
+    player.preparedtwo = .8;
+    player.preparedthree = .8;
+    player.preparedfour = .8;
+    player.preparedfive = .8;
 
     classesA = [player.periodfour, player.periodfive];
     classesB = [player.periodone, player.periodtwo, player.periodthree];
@@ -150,19 +149,16 @@ var events = document.getElementById("events");
 
 function classevents() {
 
-    var sleepcheck = Math.abs(player.slp) * Math.random();
     if (day == 1) {
         events.textContent = "Today is the first day. You are unsettled by the beginning of the end."
     }
 
-    if (sleepcheck > 2) {
+    if (player.slp > 3) {
         if (daytype == "A") {
-            var selection = Math.floor(Math.random() * 2);
             events.textContent = "You're very tired, you got less out of all your classes today."
             player.preparedfour = player.preparedfour - .1
             player.preparedfive = player.preparedfive - .1
         } else if (daytype == "B") {
-            var selection = Math.floor(Math.random() * 3);
             player.preparedone = player.preparedone - .1
             player.preparedtwo = player.preparedtwo - .1
             player.preparedthree = player.preparedthree - .1
@@ -182,8 +178,8 @@ function rolltest() {
         testui.hidden = false;
         testbox.hidden = false;
         testclassnumber = Math.floor(Math.random() * 2);
+        console.log(testclassnumber + "" + daytype)
         testclass = classesA[testclassnumber];
-        testday = true;
         if (testclassnumber == 0) {
             if (player.preparedone > .6) {
                 testui.textContent = "You have a test in " + testclass + ". You feel pretty prepared for it."
@@ -206,7 +202,9 @@ function rolltest() {
         testbox.hidden = false;
         testclassnumber = Math.floor(Math.random() * 3);
         testclass = classesB[(testclassnumber)];
-        if (testclassnumber == 0) {
+        testclassnumber = testclassnumber + 2;
+        console.log(testclassnumber + "" + daytype)
+        if (testclassnumber == 2) {
             if (player.preparedthree > .6) {
                 testui.textContent = "You have a test in " + testclass + ". You feel pretty prepared for it."
             } else if (player.preparedthree > .3) {
@@ -214,7 +212,7 @@ function rolltest() {
             } else {
                 testui.textContent = "You have a test in " + testclass + ". You feel bad about this test."
             }
-        } else if (testclassnumber == 1) {
+        } else if (testclassnumber == 3) {
             if (player.preparedfour > .6) {
                 testui.textContent = "You have a test in " + testclass + ". You feel pretty prepared for it."
             } else if (player.preparedfour > .3) {
@@ -222,7 +220,7 @@ function rolltest() {
             } else {
                 testui.textContent = "You have a test in " + testclass + ". You feel bad about this test."
             }
-        } else if (testclassnumber == 2) {
+        } else if (testclassnumber == 4) {
             if (player.preparedfive > .6) {
                 testui.textContent = "You have a test in " + testclass + ". You feel pretty prepared for it."
             } else if (player.preparedfive > .3) {
@@ -236,10 +234,33 @@ function rolltest() {
 }
 
 function evaluatetest() {
+    console.log(testclassnumber + "" + daytype)
     if (cheat.checked == true) {
         if (Math.random() > .5) {
             alert("You lost! You were caught cheating, ending your academic career. Refresh to restart.")
             endturn.hidden = "true"
+        } else {
+            if (testclassnumber == 0) {
+                testgrade = Math.random() * 100
+                player.gradeone = Math.floor((player.gradeone + testgrade) / 2)
+                testhistory.textContent = "Your score on your last test was " + Math.floor(testgrade) + " in " + player.periodone + "."
+            } else if (testclassnumber == 1) {
+                testgrade = Math.random() * 100
+                player.gradetwo = Math.floor((player.gradetwo + testgrade) / 2)
+                testhistory.textContent = "Your score on your last test was " + Math.floor(testgrade) + " in " + player.periodtwo + "."
+            } else if (testclassnumber == 2) {
+                testgrade = Math.random() * 100
+                player.gradethree = Math.floor((player.gradethree + testgrade) / 2)
+                testhistory.textContent = "Your score on your last test was " + Math.floor(testgrade) + " in " + player.periodthree + "."
+            } else if (testclassnumber == 3) {
+                testgrade = Math.random() * 100
+                player.gradefour = Math.floor((player.gradefour + testgrade) / 2)
+                testhistory.textContent = "Your score on your last test was " + Math.floor(testgrade) + " in " + player.periodfour + "."
+            } else if (testclassnumber == 4) {
+                testgrade = Math.random() * 100
+                player.gradefive = Math.floor((player.gradefive + testgrade) / 2)
+                testhistory.textContent = "Your score on your last test was " + Math.floor(testgrade) + " in " + player.periodfive + "."
+            }
         }
     } else if (attemptbutton.checked == true) {
         if (testclassnumber == 0) {
@@ -266,14 +287,87 @@ function evaluatetest() {
     }
     cheat.checked = false;
     attemptbutton.checked = false;
-    testday = false;
 }
 
+var homeworklist = document.getElementById("homeworklist");
+
 function generatehomework() {
-    rollforhomework = Math.random();
+    var rollforhomework = Math.random(),
+        li = document.createElement("li"),
+        content = document.createElement("span"),
+        deletebutton = document.createElement("button");
+
+    deletebutton.textContent = "Do";
+    deletebutton.className = "delete"
+
+    deletebutton.addEventListener("click", () => {
+        var target = deletebutton.parentElement;
+        evaluatehomework(deletebutton.parentElement.className, deletebutton.parentElement.id);
+        target.remove();
+    });
+
     if (day > 1 && daytype == "A") {
-        console.log("hello")
+        if (rollforhomework > .5) {
+            content.textContent = player.periodfour + " (Day " + day + ") ";
+
+            li.appendChild(content);
+            li.appendChild(deletebutton);
+            li.className = "four"
+            li.id = day
+            homeworklist.appendChild(li);
+        } else {
+            content.textContent = player.periodfive + " (Day " + day + ") ";
+
+            li.appendChild(content);
+            li.appendChild(deletebutton);
+            li.className = "five"
+            li.id = day
+            homeworklist.appendChild(li);
+        }
     } else if (day > 2 && daytype == "B") {
-        console.log("hello")
+        if (rollforhomework > .66) {
+            content.textContent = player.periodthree + " (Day " + day + ") ";
+
+            li.appendChild(content);
+            li.appendChild(deletebutton);
+            li.className = "three"
+            li.id = day
+            homeworklist.appendChild(li);
+        } else if (rollforhomework > .33) {
+            content.textContent = player.periodtwo + " (Day " + day + ") ";
+
+            li.appendChild(content);
+            li.appendChild(deletebutton);
+            li.className = "two"
+            li.id = day
+            homeworklist.appendChild(li);
+        } else {
+            content.textContent = player.periodone + " (Day " + day + ") ";
+
+            li.appendChild(content);
+            li.appendChild(deletebutton);
+            li.className = "one"
+            li.id = day
+            homeworklist.appendChild(li);
+        }
+    }
+}
+
+function evaluatehomework(caller, assignedday) {
+    if (caller == "one" && player.gradeone < 90) {
+        player.gradeone = player.gradeone + (5 / (day - assignedday + 1))
+        player.slp = player.slp + 1
+    } else if (caller == "two" && player.gradetwo < 90) {
+        player.gradetwo = player.gradetwo + (5 / (day - assignedday + 1))
+        player.slp = player.slp + 1
+    } else if (caller == "three" && player.gradethree < 90) {
+        player.gradethree = player.gradethree + (5 / (day - assignedday + 1))
+        player.slp = player.slp + 1
+    } else if (caller == "four" && player.gradefour < 90) {
+        player.gradefour = player.gradefour + (5 / (day - assignedday + 1))
+        player.slp = player.slp + 1
+    } else if (caller == "five" && player.gradefive < 90) {
+        player.gradefive = player.gradefive + (5 / (day - assignedday + 1))
+        player.slp = player.slp + 1
     }
 }
