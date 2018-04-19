@@ -3,25 +3,35 @@
 
 <head>
     <title>AP Project</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <div id="help"></div>
-    <div id="intro">Summer is at its end, you're at your last year of high school. <br> Can you finish the year and graduate?</div>
-    <div id="header"></div>
-    <div id="schedule"></div>
-    <div id="events"></div>
-    <div id="test" hidden></div>
-    <div id="testdecision" hidden><input type="checkbox" id="attempt">Take the Test<input type="checkbox" id="cheat">Attempt to Cheat</div>
-    <div id="testhistory"></div>
-    <div id="main" hidden>Study for Period: <input type="checkbox" id="one">1 <input type="checkbox" id="two">2 <input type="checkbox" id="three">3 <input type="checkbox" id="four">4 <input type="checkbox" id="five">5
+    <div class="row">
+        <div class="col-sm-8 text-center">
+            <div id="help"></div>
+            <div id="intro">Summer is at its end, you're at your last year of high school. <br> Can you finish the year and graduate?</div>
+            <div id="header"></div>
+            <div id="schedule"></div>
+            <div id="events"></div>
+            <br>
+            <div id="test" hidden></div>
+            <div id="testdecision" hidden><input type="checkbox" id="attempt">Take the Test <input type="checkbox" id="cheat">Attempt to Cheat</div>
+            <div id="testhistory"></div><br>
+            <div id="main" hidden>Study for Period: <input type="checkbox" id="one">1 <input type="checkbox" id="two">2 <input type="checkbox" id="three">3 <input type="checkbox" id="four">4 <input type="checkbox" id="five">5
+            </div>
+            <button id="endturn">Begin</button>
+            <div id="stats"></div>
+        </div>
+        <div class="col-sm-4">
+            <div id="homeworkparent" hidden>You have homework in:
+                <ul id="homeworklist"></ul>
+            </div>
+        </div>
     </div>
-    <div id="homeworkparent">
-        <ul id="homeworklist"></ul>
-    </div>
-    <button id="endturn">Begin</button>
-    <div id="stats"></div>
-
 </body>
 <script src="functions.js"></script>
 

@@ -4,7 +4,7 @@ var player = {
     },
     day = 0,
     daytype = "",
-    lastday = 30;
+    lastday = 180;
 
 var endturn = document.getElementById("endturn");
 endturn.addEventListener("click", nextday);
@@ -14,6 +14,7 @@ function nextday() {
         generateclasses()
         showschedule();
         document.getElementById("main").hidden = false
+        document.getElementById("homeworkparent").hidden = false
         document.getElementById("intro").hidden = true
         endturn.textContent = "Next Day"
         day++;
@@ -22,10 +23,10 @@ function nextday() {
         updateheader();
     } else if (day == lastday) {
         if (player.gradeone > 69 && player.gradetwo > 69 && player.gradethree > 69 && player.gradefour > 69 && player.gradefive > 69) {
-            alert("You won! You passed all of your classes and received your diploma. Your future is looking bright.")
+            events.textContent = "You won! You passed all of your classes and received your diploma. Your future is looking bright."
             endturn.hidden = true
         } else {
-            alert("You failed one or more classes with below a C. You look towards taking remedial classes during your summer.")
+            events.textContent = "You failed one or more classes with a grade below 70%. You look towards taking remedial classes during your summer."
             endturn.hidden = true
         }
     } else if (day % 5 == 0 && day != 5 && attemptbutton.checked == false && cheat.checked == false) {
@@ -73,32 +74,34 @@ function generateclasses() {
     player.gradefour = 100;
     player.gradefive = 100;
 
-    player.preparedone = .7;
-    player.preparedtwo = .7;
-    player.preparedthree = .7;
-    player.preparedfour = .7;
-    player.preparedfive = .7;
+    player.preparedone = .6;
+    player.preparedtwo = .6;
+    player.preparedthree = .6;
+    player.preparedfour = .6;
+    player.preparedfive = .6;
 
     classesA = [player.periodfour, player.periodfive];
     classesB = [player.periodone, player.periodtwo, player.periodthree];
 }
 
 var header = document.getElementById("header");
+header.setAttribute("style", "white-space: pre;");
+
 
 function updateheader() {
     if (day != 0 && day % 5 == 0) {
         if (day % 2 == 0) {
-            header.textContent = "Today is day " + day + ", a B day. You have " + player.periodone + ", " + player.periodtwo + ", and " + player.periodthree + ". Its also a Friday, you have more time for activities.";
+            header.textContent = "Today is day " + day + ", a B day." + "\r\n" + "You have " + player.periodone + ", " + player.periodtwo + ", and " + player.periodthree + ". Its also a Friday, you have more time for activities.";
             daytype = "B";
         } else {
-            header.textContent = "Today is day " + day + ", an A day. You have " + player.periodfour + " and " + player.periodfive + ". Its also a Friday, you have more time for activities."
+            header.textContent = "Today is day " + day + ", an A day." + "\r\n" + "You have " + player.periodfour + " and " + player.periodfive + ". Its also a Friday, you have more time for activities."
             daytype = "A";
         }
     } else if (day % 2 == 0) {
-        header.textContent = "Today is day " + day + ", a B day. You have " + player.periodone + ", " + player.periodtwo + ", and " + player.periodthree + ".";
+        header.textContent = "Today is day " + day + ", a B day." + "\r\n" + "You have " + player.periodone + ", " + player.periodtwo + ", and " + player.periodthree + ".";
         daytype = "B";
     } else {
-        header.textContent = "Today is day " + day + ", an A day. You have " + player.periodfour + " and " + player.periodfive + "."
+        header.textContent = "Today is day " + day + ", an A day." + "\r\n" + "You have " + player.periodfour + " and " + player.periodfive + "."
         daytype = "A";
     }
 }
@@ -164,20 +167,72 @@ var events = document.getElementById("events");
 
 function classevents() {
     if (day == 1) {
-        events.textContent = "Today is the first day. You are unsettled by the beginning of the end."
+        events.textContent = "Today is the first day. You are unsettled by the beginning of the end. "
     }
 
     if (player.slp > 3) {
         if (daytype == "A") {
             player.preparedfour = player.preparedfour - .1
             player.preparedfive = player.preparedfive - .1
-            events.textContent = "You're very tired, you got less out of all your classes today."
+            events.textContent = events.textContent + "You're very tired, you got less out of all your classes today. "
         } else if (daytype == "B") {
             player.preparedone = player.preparedone - .1
             player.preparedtwo = player.preparedtwo - .1
             player.preparedthree = player.preparedthree - .1
-            events.textContent = "You're very tired, you got less out of all your classes today."
+            events.textContent = events.textContent + "You're very tired, you got less out of all your classes today. "
         }
+    }
+
+    if (player.hap == 5 && Math.random() > .98) {
+        if (daytype == "A") {
+            player.preparedfour = player.preparedfour - .1
+            player.preparedfive = player.preparedfive - .1
+            player.hap = player.hap - 2
+            events.textContent = events.textContent + "You realize you didn't really pay attention in class today because of your state of bliss. "
+        } else if (daytype == "B") {
+            player.preparedone = player.preparedone - .1
+            player.preparedtwo = player.preparedtwo - .1
+            player.preparedthree = player.preparedthree - .1
+            player.hap = player.hap - 2
+            events.textContent = events.textContent + "You realize you didn't really pay attention in class today because of your state of bliss. "
+        }
+    }
+
+    if (Math.random() > .999 && player.hap == 5) {
+        events.textContent = events.textContent + "Empowered by your good mood, you decided to make a racist comment on social media. You were exposed, your reputation destroyed, and you dropped out to go to community college. Technically you didn't graduate, so you lost. "
+        endturn.hidden = true
+    }
+
+    if (Math.random() > .997) {
+        if (daytype == "A") {
+            selectedclass = classesA[Math.floor(Math.random() * 2)]
+            events.textContent = events.textContent + "Instead of giving you partial credit, your teacher in " + selectedclass + " gives you a zero on an assignment because you didn't write your name. "
+            if (selectedclass == 0) {
+                player.gradefour = player.gradefour - 10
+            } else if (selecetedclass = 1) {
+                player.gradefive = player.gradefive - 10
+            }
+        } else if (daytype == "B") {
+            selectedclass = classesB[Math.floor(Math.random() * 3)]
+            events.textContent = events.textContent + "Instead of giving you partial credit, your teacher in " + selectedclass + " gives you a zero on an assignment because you didn't write your name. "
+            if (selectedclass == 0) {
+                player.gradeone = player.gradeone - 10
+            } else if (selecetedclass = 1) {
+                player.gradetwo = player.gradetwo - 10
+            } else if (selectedclass = 2) {
+                player.gradethree = player.gradethree - 10
+            }
+        }
+    }
+
+    if (Math.random() > .997 && player.hap = 5) {
+        events.textContent = events.textContent + "You decided to blindly go to a school dance. Only twenty or so people also bought tickets, fewer went. You feel like a loser. "
+        player.hap = player.hap - 5
+    }
+
+    if (Math.random() > .995) {
+        events.textContent = events.textContent + "You did something stupid in class. Your classmates laughed at you. "
+        player.hap = player.hap - 2
     }
 }
 
@@ -188,7 +243,7 @@ var testui = document.getElementById("test"),
     testhistory = document.getElementById("testhistory");
 
 function rolltest() {
-    if (daytype == "A" && day % 5 == 0 && day != 5) {
+    if (daytype == "A" && day % 5 == 0 && day != 5 && day != lastday) {
         testui.hidden = false;
         testbox.hidden = false;
         testclassnumber = Math.floor(Math.random() * 2);
@@ -210,7 +265,7 @@ function rolltest() {
                 testui.textContent = "You have a test in " + testclass + ". You feel bad about this test."
             }
         }
-    } else if (daytype == "B" && day % 5 == 0) {
+    } else if (daytype == "B" && day % 5 == 0 && day != lastday) {
         testui.hidden = false;
         testbox.hidden = false;
         testclassnumber = Math.floor(Math.random() * 3);
@@ -244,7 +299,7 @@ function rolltest() {
 
     if (cheat.checked == true) {
         if (Math.random() > .5) {
-            alert("You lost! You were caught cheating, ending your academic career. Refresh to restart.")
+            events.textContent = "You lost! You were caught cheating, ending your academic career. Refresh to restart."
             endturn.hidden = "true"
         } else {
             if (testclassnumber == 0 && daytype == "A") {

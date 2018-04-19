@@ -1,0 +1,7 @@
+    if () {
+        if (daytype == "A") {
+            
+        } else if (daytype == "B") {
+            
+        }
+    }
