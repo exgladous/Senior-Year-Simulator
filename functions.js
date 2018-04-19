@@ -225,7 +225,7 @@ function classevents() {
         }
     }
 
-    if (Math.random() > .997 && player.hap = 5) {
+    if (Math.random() > .997 && player.hap == 5) {
         events.textContent = events.textContent + "You decided to blindly go to a school dance. Only twenty or so people also bought tickets, fewer went. You feel like a loser. "
         player.hap = player.hap - 5
     }
