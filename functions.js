@@ -55,6 +55,7 @@ function showschedule() {
 function generateclasses() {
     player.classes = ["English", "Math", "Science", "History", "Elective"]
 
+    // Durstenfeld shuffle
     for (i = player.classes.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1)),
             temp = player.classes[i];
